@@ -1,0 +1,17 @@
+certifi==2019.11.28
+chardet==3.0.4
+Click==7.0
+Flask==1.1.1
+Flask-Debug==0.4.3
+idna==2.8
+inflection==0.3.1
+itsdangerous==1.1.0
+Jinja2==2.10.3
+MarkupSafe==1.1.1
+pymongo==3.10.1
+python-crontab==2.4.0
+python-dateutil==2.8.1
+requests==2.22.0
+six==1.14.0
+urllib3==1.25.8
+Werkzeug==0.16.0

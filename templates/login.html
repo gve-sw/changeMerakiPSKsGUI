@@ -1,0 +1,149 @@
+<!--
+    Copyright (c) 2020 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+           https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+-->
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="The design system sponsored by Cisco Brand">
+        <meta name="image" content="http://cisco-ui.cisco.com/assets/img/uikit-1200x630%402x.png">
+        <meta itemprop="name" content="Cisco UI Kit">
+        <meta itemprop="description" content="The design system sponsored by Cisco Brand">
+        <meta itemprop="image" content="http://cisco-ui.cisco.com">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Cisco UI Kit">
+        <meta name="twitter:description" content="The design system sponsored by Cisco Brand">
+        <meta property="og:title" content="Cisco UI Kit">
+        <meta property="og:description" content="The design system sponsored by Cisco Brand">
+        <meta property="og:image" content="https://cisco-ui.cisco.com/assets/img/uikit-1200x630%402x.png">
+        <meta property="og:url" content="http://cisco-ui.cisco.com">
+        <meta property="og:site_name" content="Cisco UI Kit">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:type" content="website">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ url_for('static',filename='img/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="128x128">
+        <link rel="icon" href="img/favicon.png" type="image/x-icon">
+        <meta name="application-name" content="Cisco UI Kit">
+        <meta name="msapplication-TileColor" content="#FFFFFF">
+        <meta name="msapplication-TileImage" content="img/mstile.png">
+        <meta name="msapplication-square70x70logo" content="img/mstile.png">
+        <meta name="msapplication-square150x150logo" content="img/mstile.png">
+        <meta name="msapplication-wide310x150logo" content="img/mstile.png">
+        <meta name="msapplication-square310x310logo" content="img/mstile.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Change PSK</title>
+
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/cui-standard.min.css') }}">
+
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+        <script src="../public/js/styleguide.js"></script>
+
+        <script type= text/javascript src="{{url_for('static',filename='js/button.js')}}"></script>
+
+    </head>
+    <script>
+    $(document).keypress(function(e){
+        if (event.keyCode === 13) { 
+            ("#submit").click(); 
+        }
+    })
+    </script>
+    <body class="cui">
+        <nav class="header" id="styleguideheader" role="navigation">
+            <div class="container-fluid">
+                <div class="header-panels">
+                    <div class="header-panel hidden-md-down">
+                        <a class="header__logo" href="http://www.cisco.com" target="_blank">
+                            <span class="icon-cisco"></span>
+                        </a>
+                        <h1 class="header__title">
+                            <span>Change PSK Page</span>
+                        </h1>
+                    </div>
+                    <div class="header-panel header-panel--center base-margin-left base-margin-right hidden-lg-up">
+                        <a class="header__logo" href="http://www.cisco.com" target="_blank">
+                            <span class="icon-cisco"></span>
+                        </a>
+                    </div>
+                    <div class="header-panel header-panel--right hidden-md-down">
+                        <a href="/" class="header-item" title="UI Kit Home"><span class="icon-home"></span></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="content content--alt" style = "text-align: center">
+            Please enter your API key to continue.
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!-- Left Rail -->
+                    <div class="col-xl-3">
+                    </div>
+
+                    <!-- Middle Rail -->
+                    <div class="col-xl-6">
+                        <div class="section" >
+                            <div class="panel panel--loose panel--raised base-margin-bottom">
+                                <h6>Please enter Meraki API Key</h6>
+                                <form action="/meraki" method="POST" name="schedule">
+                                    <input type="hidden" name="code" value="1">
+                                    Key: <input type="text" name="key">
+                                    <br><br>
+                                    <button class="btn btn--secondary" id = "submit" type="submit" value="Submit"> Submit</button>
+                                </form>
+                            </div>
+                            <div class="panel panel--loose panel--raised base-margin-bottom"id="hello" style="display:none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Rail -->
+                    <div class="col-xl-3">
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="footer__links">
+                    <ul class="list list--inline">
+                        <li><a href="http://www.cisco.com/cisco/web/siteassets/contacts/index.html" target="_blank">Contacts</a></li>
+                        <li><a href="https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ" target="_blank">Feedback</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/help.html" target="_blank">Help</a></li>
+                        
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank">Terms & Conditions</a></li></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank">Privacy Statement</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies" target="_blank">Cookie Policy</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/trademarks.html" target="_blank">Trademarks</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>

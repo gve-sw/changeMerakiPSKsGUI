@@ -1,0 +1,341 @@
+<!--
+    Copyright (c) 2020 Cisco and/or its affiliates.
+This software is licensed to you under the terms of the Cisco Sample
+Code License, Version 1.1 (the "License"). You may obtain a copy of the
+License at
+           https://developer.cisco.com/docs/licenses
+All use of the material herein must be in accordance with the terms of
+the License. All rights not expressly granted by the License are
+reserved. Unless required by applicable law or agreed to separately in
+writing, software distributed under the License is distributed on an "AS
+IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied.
+-->
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="The design system sponsored by Cisco Brand">
+        <meta name="image" content="http://cisco-ui.cisco.com/assets/img/uikit-1200x630%402x.png">
+        <meta itemprop="name" content="Cisco UI Kit">
+        <meta itemprop="description" content="The design system sponsored by Cisco Brand">
+        <meta itemprop="image" content="http://cisco-ui.cisco.com">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:title" content="Cisco UI Kit">
+        <meta name="twitter:description" content="The design system sponsored by Cisco Brand">
+        <meta property="og:title" content="Cisco UI Kit">
+        <meta property="og:description" content="The design system sponsored by Cisco Brand">
+        <meta property="og:image" content="https://cisco-ui.cisco.com/assets/img/uikit-1200x630%402x.png">
+        <meta property="og:url" content="http://cisco-ui.cisco.com">
+        <meta property="og:site_name" content="Cisco UI Kit">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:type" content="website">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="img/favicon.png" sizes="128x128">
+        <link rel="icon" href="img/favicon.png" type="image/x-icon">
+        <meta name="application-name" content="Cisco UI Kit">
+        <meta name="msapplication-TileColor" content="#FFFFFF">
+        <meta name="msapplication-TileImage" content="img/mstile.png">
+        <meta name="msapplication-square70x70logo" content="img/mstile.png">
+        <meta name="msapplication-square150x150logo" content="img/mstile.png">
+        <meta name="msapplication-wide310x150logo" content="img/mstile.png">
+        <meta name="msapplication-square310x310logo" content="img/mstile.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Change PSK</title>
+
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/cui-standard.min.css') }}">
+
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous" ></script>
+        <!-- <script src="../public/js/styleguide.js"></script> -->
+
+        <script type= text/javascript src="{{url_for('static',filename='js/button.js')}}"></script>
+
+
+         <script type=text/javascript>
+            // styling for the online status of the SSIDS
+            $(document).ready(function() {
+                $("#status span").each(function( index ) {
+                    if($(this).text() == "True"){
+                        $(this).text("Online")
+                    }
+
+                    else {
+                        $(this).text("Offline")
+                        $(this).attr('class', 'label label--danger');
+                    }
+                });
+
+                $("#submitNet").click(function(){
+                    var checked = $(".networkCheckbox:checkbox:checked")
+                    var selectedNetworks = []
+                    $(".networkCheckbox").each(function(){
+                        var $this = $(this);
+                        //gets SSID number to pass into api call
+                        if($this.is(":checked")){
+                            selectedNetworks.push($this.attr("id"));
+                        }
+                    })
+                    console.log("networks " + selectedNetworks)
+                    //$.post("/selectedNetworks", {"networkIds":selectedNetworks})
+                    $("#ssidHeader").append('<div class="loader" aria-label="Loading, please wait..."><div class="wrapper"><div class="wheel"></div></div></div>')
+                    $.ajax({
+                        type: 'POST',
+                        url:  "/selectedNetworks",
+                        data: JSON.stringify({'data':selectedNetworks}),
+                        contentType: 'application/json;charset=UTF-8',
+                        success:function(response){ $("#ssidSection").replaceWith($('#ssidSection',response)); }  
+                    })
+                })
+                $("#submitPSK").click(function(){
+                    console.log("submit clicked psks")
+                    //first get psk to change to 
+                    var psk = $("#pskInput").val();
+                    var email = $("#emailAddr").val();
+                    var ssidToChange = []
+                    var networkId =''
+                    var orgId = ''
+                    var checked = $(".pskCheckbox:checkbox:checked")
+                    $(".pskCheckbox").each(function(){
+                        var $this = $(this);
+                        //gets SSID number to pass into api call
+                        if($this.is(":checked")){
+                            ssidToChange.push($this.attr("id"));
+                        }
+                    });
+                    var alert = $('input[name="radio-default"]:checked').val();
+                    $("#result").html('<div class="loader" aria-label="Loading, please wait..."><div class="wrapper"><div class="wheel"></div></div></div>')
+                    $.post("/changePSK", {"ssidNames":ssidToChange, "psk":psk, "orgId":orgId, "networkId":networkId, "email":email, "alert":alert}).done(function(result){
+                        console.log("result " + JSON.stringify(result))
+                        $("#result").html("")
+                        //$("#result").append(JSON.stringify(result, undefined, 2))
+                        var jsonArr = []
+                        console.log(result["changedSSIDs"])
+                        // $.each(result["changedSSIDs"], function(key, ssid){
+                        //     jsonArr.push(JSON.parse(result["changedSSIDs"][key]))
+                        // });
+                        // $("#result").append(JSON.stringify(jsonArr, null, 2))
+                        $("#result").append("Status code: "+ result+" An email/ping to Webex Teams has been sent if an email address was provided.")
+
+                    })
+                });
+                $("#allNetworks").change(function(){
+                    
+                    if(this.checked){
+                        $(".networkCheckbox").prop('checked', $(this).prop('checked'))
+                    }else{
+                        $(".networkCheckbox").prop('checked', false)
+                    }
+                });
+
+             });
+        </script>
+
+
+
+    </head>
+    <body class="cui">
+        <nav class="header" id="styleguideheader" role="navigation">
+            <div class="container-fluid">
+                <div class="header-panels">
+                    <div class="header-panel hidden-md-down">
+                        <a class="header__logo" href="http://www.cisco.com" target="_blank">
+                            <span class="icon-cisco"></span>
+                        </a>
+                        <h1 class="header__title">
+                            <span>Change PSK Page</span>
+                        </h1>
+                    </div>
+                    <div class="header-panel header-panel--center base-margin-left base-margin-right hidden-lg-up">
+                        <a class="header__logo" href="http://www.cisco.com" target="_blank">
+                            <span class="icon-cisco"></span>
+                        </a>
+                    </div>
+                    <div class="header-panel header-panel--right hidden-md-down">
+                        <a href="/" class="header-item" title="UI Kit Home"><span class="icon-home"></span></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="content content--alt">
+            <div style = "text-align: center">
+            <h5>Welcome! Change your PSK's here for all chosen SSIDs within a network</h5>
+            <h6>First, you need to select the Organization, then the Network(s) to modify</h6>
+        </div>
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!-- Left Rail -->
+                    <div class="col-xl-3">
+                        <div class="section">
+
+                            <!-- Accordion -->
+                            <div class="panel panel--loose panel--raised base-margin-bottom">
+                                <h2 class="subtitle">Organization(s)</h2>
+                                <hr>
+                                <div class="section">
+                                    {% for org in orgs %}
+                                    <div class="row">
+                                        <div class="col-md-7 base-margin-bottom">
+                                            <a href="/meraki/{{org.id}}">{{org.name}}</a>
+                                        </div>
+                                        <div class="col-md-5 base-margin-bottom" id="status">
+                                            <a href="{{org.url}}" target = "_blank">Link to Dashboard</a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                            </div>
+                            <!-- Networks -->
+                            <div class="panel panel--loose panel--raised base-margin-bottom">
+                                <div class = "row" id = "networkHeader">
+                                    <div class="col-md-6 base-margin-bottom">Networks</div>
+                                    <div class = "col-md-2 base-margin-bottom">Select</div>
+                                    <div class = "col-md-3 base-margin-bottom">Select All-</div>
+                                    <div class= "col-sm-1 base-margin-bottom"><label class="checkbox">
+                                        <input type="checkbox" class="focus" id = "allNetworks">
+                                        <span class="checkbox__input"></span>
+                                    </label></div>
+                                    <hr>
+                                </div>
+                                    <div class="section">
+                                        {% for network in networks %}
+                                        <div class = "row">
+                                            <div class="col-md-6 base-margin-bottom">
+                                            <a href="/meraki/org/{{network.id}}">{{network.name}}</a>
+                                            </div>
+                                            <div class="col-md-6 base-margin-bottom">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="focus networkCheckbox" id = "{{network.id}}">
+                                                <span class="checkbox__input"></span>
+                                            </label>
+                                        </div>
+                                        </div>
+                                        
+                                        {% endfor %}
+                                    </div>
+                                    <button class="btn btn--success" id = "submitNet">Submit</button>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+
+                    <!-- Middle Rail -->
+                    <div class="col-xl-6">
+                        <div class="section" >
+                            
+                            <div class="section" id = "ssidSection">
+
+                            
+                                <div class="panel panel--loose panel--raised base-margin-bottom">
+                                    <h2 class="subtitle"id ="ssidHeader">SSIDs</h2>
+                                    <hr>
+                                    <div class="section" style="overflow-y: scroll; height:400px;">
+                                            <div class="row">
+                                            <div class="col-md-3 base-margin-bottom">
+                                                <h6>Network</h6>
+                                            </div>
+                                            <div class="col-md-3 base-margin-bottom">
+                                                    <h6>SSID Name</h6>
+                                            </div>
+                                            <div class="col-md-3 base-margin-bottom">
+                                                    <h6>Online Status</h6>
+                                            </div>
+                                            <div class="col-md-3 base-margin-bottom">
+                                                <h6>Change PSK</h6>
+                                            </div>
+                                       
+                                        </div>
+                                                {% for ssid in ssids %}
+                                                <!--only include SSIDs that are using PSK auth and that are configured-->
+                                                {% if 'Unconfigured' not in ssid.name and (ssid.authMode == 'psk' or 'wpa' in ssid.authMode)%}
+                                                <div class="row">
+                                                    <div class="col-md-3 base-margin-bottom" id="status">
+                                                        <h6>{{ ssid.networkName }}</h6>
+                                                                
+                                                    </div>
+                                                    <div class="col-md-3 base-margin-bottom">
+                                                        <h6>{{ ssid.name }}</h6>
+                                                    </div>
+                                                    <div class="col-md-3 base-margin-bottom" id="status">
+                                                        <span class="label label--success">{{ ssid.enabled }}</span>
+                                                        
+                                                    </div>
+                                                    <div class="col-md-3 base-margin-bottom" id="pskCheck">
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" class="focus pskCheckbox" id = "{{ssid.name}}" checked>
+                                                            <span class="checkbox__input" ></span>
+                                                        </label>
+                                                        
+                                                    </div>
+                                                    
+                                                </div>
+                                                {% endif %}
+                                                {% endfor %}
+                                    </div>
+                                        <div class="base-margin-bottom">
+                                            <div id="theme-colors"></div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Rail -->
+                    <div class="col-xl-3">
+                        <div class="panel panel--loose panel--raised base-margin-bottom">
+                            Enter new PSK below and press submit. Please wait until data populates below before submitting again.
+                            <input type = "text" id = "pskInput" placeholder="PSK Here"><br><br>
+                            <input type = "text" id = "emailAddr" placeholder="Email (optional)"><br><br>
+                            <div class="col-lg-4 col-6">
+                                    <div class="subheader">Alert me on: </div>
+                                    <div class="form-group form-group--inline">
+                                        <label class="radio">
+                                            <input type="radio"  name="radio-default" value = "Teams">
+                                            <span class="radio__input"></span>
+                                            <span class="radio__label">Teams</span>
+                                        </label>
+                                        
+                                        <label class="radio">
+                                            <input type="radio" name="radio-default" value = "Email">
+                                            <span class="radio__input"></span>
+                                            <span class="radio__label">Email</span>
+                                        </label>
+                                    </div>
+                                </div><br><br>
+                            <button class="btn btn--success" id = "submitPSK">Submit</button>
+                        </div>
+                        <pre id = "result">
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="footer__links">
+                    <ul class="list list--inline">
+                        
+                        <li><a href="https://secure.opinionlab.com/ccc01/o.asp?id=jBjOhqOJ" target="_blank">Feedback</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/help.html" target="_blank">Help</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank">Terms & Conditions</a></li></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank">Privacy Statement</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html#cookies" target="_blank">Cookie Policy</a></li>
+                        <li><a href="https://www.cisco.com/c/en/us/about/legal/trademarks.html" target="_blank">Trademarks</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </body>
+    
+</html>
