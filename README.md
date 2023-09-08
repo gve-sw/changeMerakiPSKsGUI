@@ -1,3 +1,7 @@
+| :exclamation:  External repository notice   |
+|:---------------------------|
+| This repository is now mirrored at https://github.com/gve-sw/changeMerakiPSKsGUI.  Please inform a https://github.com/gve-sw/ organization admin of any changes to mirror them to the external repo |
+
 # changeMerakiPSKsGUI
 A GUI where network admins can select multiple SSIDs to change the PSKs. This saves time since on the Meraki Dashboard, you can only change one at a time. Can select the organization, the network(s), then multiple SSIDs to change. The user can optionally input their email address so that an email or message on Webex Teams will be sent to them notifying that the changes were made.
 
@@ -28,7 +32,7 @@ Option 1:
 1. Pull down the project into a python virtual environment
 
 ```
-git clone https://github.com/gve-sw/changeMerakiPSKsGUI.git
+git clone https://wwwin-github.cisco.com/gve/changeMerakiPSKsGUI.git
 ```
 
 2. Install required packages
@@ -50,7 +54,7 @@ Option 2:
 
 2. Pull down the project
 ```
-git clone https://github.com/gve-sw/changeMerakiPSKsGUI.git
+git clone https://wwwin-github.cisco.com/gve/changeMerakiPSKsGUI.git
 ```
 3. Run Docker image
 ```

@@ -240,7 +240,7 @@ def selectedNetworks():
     headers1["Accept"] = "application/json"
     headers1["Authorization"] = "Bearer "+meraki_key
     for network in networkIds:
-        response = requests.request("GET", "https://api-mp.meraki.com/api/v1" + "/networks/" + str(network) + "/wireless/ssids", headers=headers1)
+        response = requests.request("GET", "https://api.meraki.com/api/v1" + "/networks/" + str(network) + "/wireless/ssids", headers=headers1)
         if type(json.loads(response.text)) == dict:
             print(response.text, 'network', network) #"error":this endpoint only supports wireless networks
         else:
@@ -272,7 +272,7 @@ def changePSK():
     #save ssids that are chosen to then send with put request
     chosenSSIDs = []
     for ssid in ssidNames:
-        response = requests.request("GET", "https://api-mp.meraki.com/api/v1" + "/networks/" + ssidNetworkMapping[ssid] + "/wireless/ssids", headers=headers1)
+        response = requests.request("GET", "https://api.meraki.com/api/v1" + "/networks/" + ssidNetworkMapping[ssid] + "/wireless/ssids", headers=headers1)
         ssid_data = json.loads(response.text)
         for ssid1 in ssidList:
             if(ssid == ssid1['name']):
@@ -283,7 +283,7 @@ def changePSK():
 
         data1= {"name" : ssid["name"], "enabled" : ssid["enabled"], "authMode" : ssid["authMode"], "psk" : newPSK, "encryptionMode" : ssid["encryptionMode"], "wpaEncryptionMode":ssid["wpaEncryptionMode"]}
         
-        url = "https://api-mp.meraki.com/api/v1" + "/networks/"+ssidNetworkMapping[ssid['name']] + "/wireless/ssids/"+ str(ssid["number"])
+        url = "https://api.meraki.com/api/v1" + "/networks/"+ssidNetworkMapping[ssid['name']] + "/wireless/ssids/"+ str(ssid["number"])
         print("url ", url)
         print("data ", json.dumps(data1))
         
@@ -321,7 +321,7 @@ def changePSK():
             send_email(destEmail, "email@gmail.com", "password", "PSK Has Been Changed", resultStr)
         elif alertType == "Teams":
 
-            botHeader = {"Content-Type":"application/json", "Authorization": "Bearer xxxxxxzz"}
+            botHeader = {"Content-Type":"application/json", "Authorization": "Bearer xxxxxxxx"}
             webexData = {"toPersonEmail" : destEmail, "markdown": json.dumps(returnObj)}
             response1 = requests.request("POST", "https://webexapis.com/v1/messages", headers= botHeader, data = json.dumps(webexData))
             

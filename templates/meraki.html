@@ -63,6 +63,15 @@ or implied.
          <script type=text/javascript>
             // styling for the online status of the SSIDS
             $(document).ready(function() {
+
+                $("#sssid_select_all").change(function(){
+                    if(this.checked){
+                        $(".pskCheckbox").prop('checked', $(this).prop('checked'))
+                    }else{
+                        $(".pskCheckbox").prop('checked', false)
+                    }
+                });
+
                 $("#status span").each(function( index ) {
                     if($(this).text() == "True"){
                         $(this).text("Online")
@@ -128,14 +137,12 @@ or implied.
                     })
                 });
                 $("#allNetworks").change(function(){
-                    
                     if(this.checked){
                         $(".networkCheckbox").prop('checked', $(this).prop('checked'))
                     }else{
                         $(".networkCheckbox").prop('checked', false)
                     }
                 });
-
              });
         </script>
 
@@ -202,10 +209,12 @@ or implied.
                                     <div class="col-md-6 base-margin-bottom">Networks</div>
                                     <div class = "col-md-2 base-margin-bottom">Select</div>
                                     <div class = "col-md-3 base-margin-bottom">Select All-</div>
-                                    <div class= "col-sm-1 base-margin-bottom"><label class="checkbox">
-                                        <input type="checkbox" class="focus" id = "allNetworks">
-                                        <span class="checkbox__input"></span>
-                                    </label></div>
+                                    <div class= "col-sm-1 base-margin-bottom">
+                                        <label class="checkbox">
+                                            <input type="checkbox" class="focus" id = "allNetworks">
+                                            <span class="checkbox__input"></span>
+                                        </label>
+                                    </div>
                                     <hr>
                                 </div>
                                     <div class="section">
@@ -233,60 +242,63 @@ or implied.
 
                     <!-- Middle Rail -->
                     <div class="col-xl-6">
-                        <div class="section" >
-                            
-                            <div class="section" id = "ssidSection">
-
-                            
-                                <div class="panel panel--loose panel--raised base-margin-bottom">
-                                    <h2 class="subtitle"id ="ssidHeader">SSIDs</h2>
-                                    <hr>
-                                    <div class="section" style="overflow-y: scroll; height:400px;">
-                                            <div class="row">
-                                            <div class="col-md-3 base-margin-bottom">
-                                                <h6>Network</h6>
-                                            </div>
-                                            <div class="col-md-3 base-margin-bottom">
-                                                    <h6>SSID Name</h6>
-                                            </div>
-                                            <div class="col-md-3 base-margin-bottom">
-                                                    <h6>Online Status</h6>
-                                            </div>
-                                            <div class="col-md-3 base-margin-bottom">
-                                                <h6>Change PSK</h6>
-                                            </div>
-                                       
-                                        </div>
-                                                {% for ssid in ssids %}
-                                                <!--only include SSIDs that are using PSK auth and that are configured-->
-                                                {% if 'Unconfigured' not in ssid.name and (ssid.authMode == 'psk' or 'wpa' in ssid.authMode)%}
-                                                <div class="row">
-                                                    <div class="col-md-3 base-margin-bottom" id="status">
-                                                        <h6>{{ ssid.networkName }}</h6>
-                                                                
-                                                    </div>
-                                                    <div class="col-md-3 base-margin-bottom">
-                                                        <h6>{{ ssid.name }}</h6>
-                                                    </div>
-                                                    <div class="col-md-3 base-margin-bottom" id="status">
-                                                        <span class="label label--success">{{ ssid.enabled }}</span>
-                                                        
-                                                    </div>
-                                                    <div class="col-md-3 base-margin-bottom" id="pskCheck">
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" class="focus pskCheckbox" id = "{{ssid.name}}" checked>
-                                                            <span class="checkbox__input" ></span>
-                                                        </label>
-                                                        
-                                                    </div>
-                                                    
-                                                </div>
-                                                {% endif %}
-                                                {% endfor %}
+                        <div class="section">
+                            <div class="panel panel--loose panel--raised base-margin-bottom">
+                                <h2 class="subtitle">SSIDs</h2>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-3 base-margin-bottom">
+                                        <h6>Network</h6>
                                     </div>
-                                        <div class="base-margin-bottom">
-                                            <div id="theme-colors"></div>
+                                    <div class="col-md-3 base-margin-bottom">
+                                            <h6>SSID Name</h6>
+                                    </div>
+                                    <div class="col-md-2 base-margin-bottom">
+                                            <h6>Online Status</h6>
+                                    </div>
+                                    <div class="col-md-2 base-margin-bottom">
+                                        <h6>Change PSK</h6>
+                                    </div>
+                                    <div class = "col-md-1 base-margin-bottom">
+                                        <h6>Select All-</h6>
+                                    </div>
+                                    <div class="col-md-1 base-margin-bottom">
+                                        <label class="checkbox">
+                                            <input type="checkbox" class="focus" id ="sssid_select_all">
+                                            <span class="checkbox__input"></span>
+                                        </label>
+                                    </div>
+                                    
+                                </div>
+                                <div id = "ssidSection" style="overflow-y: scroll; height:400px; overflow:hidden;">
+                                    <h2 class="subtitle"id ="ssidHeader"></h2>
+                                    {% for ssid in ssids %}
+                                    <!--only include SSIDs that are using PSK auth and that are configured-->
+                                    {% if 'Unconfigured' not in ssid.name and (ssid.authMode == 'psk' or 'wpa' in ssid.authMode)%}
+                                    <div class="row">
+                                        <div class="col-md-3 base-margin-bottom" id="status">
+                                            <h6>{{ ssid.networkName }}</h6>       
                                         </div>
+                                        <div class="col-md-3 base-margin-bottom">
+                                            <h6>{{ ssid.name }}</h6>
+                                        </div>
+                                        <div class="col-md-2 base-margin-bottom" id="status">
+                                            <span class="label label--success">{{ ssid.enabled }}</span>
+                                        </div>
+                                        <div class="col-md-2 base-margin-bottom" id="pskCheck">
+                                            <label class="checkbox">
+                                                <input type="checkbox" class="focus pskCheckbox" id = "{{ssid.name}}">
+                                                <span class="checkbox__input" ></span>
+                                            </label>
+                                        </div>
+                                        <div class = "col-md-1 base-margin-bottom" hidden></div>
+                                        <div class = "col-md-1 base-margin-bottom" hidden></div>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="base-margin-bottom">
+                                        <div id="theme-colors"></div>
                                 </div>
                             </div>
                         </div>
